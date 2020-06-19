@@ -1,7 +1,7 @@
 let XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 //Require the xmlhttprequest module  for make HTTP requests from NodeJS.
-let API = 'https://dragon-ball-api.herokuapp.com/api/character/';
-//URL Dragon Ball API to get characters
+let API = 'https://ghibliapi.herokuapp.com/films/';
+//URL to get The Studio Ghibli Films
 
 function fetchData(url_api, callback){
 
@@ -45,7 +45,22 @@ fetchData(API, function(error1, data1){
 
         return console.error(error1);
     }
-    console.log(data1[0]);
+    fetchData(data1[8].people[0], function(error2, data2){
+
+        if(error2){
+
+            return console.error(error2);
+        }
+        fetchData(data2.species, function(error3, data3){
+            if(error3){
+
+                return console.error(error3);
+            }
+            console.log(`The name of the movie is: ${data1[8].title}`);
+            console.log(`The main character is: ${data2.name}`);
+            console.log(`His species is: ${data3.name}`);
+        })
+    })
     //Printing in console the data received from the API
     //when response is succesful
 })
